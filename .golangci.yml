@@ -1,0 +1,55 @@
+version: "2"
+linters:
+  enable:
+    - contextcheck
+    - durationcheck
+    - gochecknoglobals
+    - gochecknoinits
+    - gocritic
+    - goheader
+    - gosec
+    - loggercheck
+    - mirror
+    - misspell
+    - nolintlint
+    - promlinter
+    - reassign
+    - revive
+    - unconvert
+    - usestdlibvars
+  settings:
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    goheader:
+      template: |-
+        Copyright (c) {{MOD_YEAR}}, RetailNext, Inc.
+        This material contains trade secrets and confidential information of
+        RetailNext, Inc.  Any use, reproduction, disclosure or dissemination
+        is strictly prohibited without the explicit written permission
+        of RetailNext, Inc.
+        All rights reserved.
+    loggercheck:
+      require-string-key: true
+      no-printf-like: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gci
+    - gofumpt
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

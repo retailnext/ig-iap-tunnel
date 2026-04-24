@@ -1,0 +1,20 @@
+# from https://github.com/github/gitignore
+## Editor/IDE
+.idea/
+.vscode/
+
+## Code coverage profiles and other test artifacts
+*.out
+coverage.*
+!Coverage.ts
+*.coverprofile
+profile.cov
+.DS_Store
+
+node_modules/
+.scannerwork/
+coverage/
+
+# Environment files
+*.tsbuildinfo
+.tool-versions
