@@ -3,7 +3,7 @@ module github.com/retailnext/ig-iap-tunnel
 go 1.26.2
 
 require (
-	github.com/cedws/iapc v0.1.10
+	github.com/cedws/iapc v0.1.12
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/oauth2 v0.36.0
 	google.golang.org/api v0.275.0
