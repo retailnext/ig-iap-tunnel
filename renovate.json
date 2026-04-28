@@ -1,7 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>retailnext/renovate-config:dependencies-cloud",
-    ":automergeAll"
-  ]
+    "config:base",
+    ":automergeAll",
+    ":gitSignOff",
+    ":semanticCommits",
+    "docker:pinDigests",
+    "regexManagers:githubActionsVersions"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "platformAutomerge": true,
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodUpdateImportPaths"
+  ],
+  "rebaseWhen": "conflicted"
 }
