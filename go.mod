@@ -1,6 +1,6 @@
 module github.com/retailnext/ig-iap-tunnel
 
-go 1.25.0
+go 1.26.2
 
 require (
 	github.com/cedws/iapc v0.1.10
