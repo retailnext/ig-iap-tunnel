@@ -6,7 +6,7 @@
     ":gitSignOff",
     ":semanticCommits",
     "docker:pinDigests",
-    "regexManagers:githubActionsVersions"
+    "customManagers:githubActionsVersions"
   ],
   "labels": [
     "dependencies"
