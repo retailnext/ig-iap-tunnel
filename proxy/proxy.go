@@ -80,22 +80,25 @@ func handleClient(ctx context.Context, dial dialFunc, conn net.Conn) {
 		return
 	}
 
-	slog.Debug("Dialed IAP", "client", conn.RemoteAddr())
+	slog.Info("Dialed IAP", "client", conn.RemoteAddr())
+
 	var wg sync.WaitGroup
 	wg.Add(2)
 
 	go func() {
 		defer wg.Done()
-		if _, err := io.Copy(conn, tun); err != nil {
-			slog.Debug(err.Error())
+		n, err := io.Copy(conn, tun)
+		if err != nil {
+			slog.Error("copy tun→conn", "client", conn.RemoteAddr(), "bytes", n, "err", err)
 		}
 		conn.Close()
 	}()
 
 	go func() {
 		defer wg.Done()
-		if _, err := io.Copy(tun, conn); err != nil {
-			slog.Debug(err.Error())
+		n, err := io.Copy(tun, conn)
+		if err != nil {
+			slog.Error("copy conn→tun", "client", conn.RemoteAddr(), "bytes", n, "err", err)
 		}
 		tun.Close()
 	}()
