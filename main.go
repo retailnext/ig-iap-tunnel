@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/signal"
 	"regexp"
+	"strings"
 	"syscall"
 
 	"github.com/cedws/iapc/iap"
@@ -36,6 +37,7 @@ func run() error {
 	instanceGroupID := flag.String("instance-group-id", "", "Managed instance group resource ID (projects/{project}/regions/{region}/instanceGroups/{name})")
 	remotePort := flag.String("remote-port", "", "Port on the remote instance")
 	localPort := flag.String("local-port", "", "Local port to listen on")
+	proxyDomains := flag.String("proxy-domains", "", "Comma-separated list of domains to route through the IAP tunnel. When set, connections are parsed as HTTP proxy requests (CONNECT or absolute-URI) and only matching domains (including subdomains) go through the tunnel; everything else is dialed directly. When unset, all traffic goes through the tunnel.")
 	flag.Parse()
 
 	if *instanceGroupID == "" || *remotePort == "" || *localPort == "" {
@@ -73,7 +75,26 @@ func run() error {
 		iap.WithPort(*remotePort),
 		iap.WithTokenSource(&gcpConfig.Cred.TokenSource),
 	}
-	return proxy.Listen(ctx, "127.0.0.1:"+*localPort, opts)
+	var domains []string
+	for d := range strings.SplitSeq(*proxyDomains, ",") {
+		if d = strings.TrimSpace(d); d != "" {
+			if strings.ContainsAny(d, "*?") {
+				return fmt.Errorf("invalid domain %q: wildcards are not supported", d)
+			}
+			if strings.HasPrefix(d, ".") {
+				return fmt.Errorf("invalid domain %q: leading dot is not allowed", d)
+			}
+			if strings.HasSuffix(d, ".") {
+				return fmt.Errorf("invalid domain %q: trailing dot is not allowed", d)
+			}
+			domains = append(domains, d)
+		}
+	}
+	if len(domains) > 0 {
+		slog.Info("selective proxying enabled", "domains", domains)
+	}
+
+	return proxy.Listen(ctx, "127.0.0.1:"+*localPort, opts, domains)
 }
 
 func main() {

@@ -111,8 +111,8 @@ func TestListenLoopContextCancel(t *testing.T) {
 	done := make(chan struct{})
 	go func() {
 		defer close(done)
-		err := listenLoop(ctx, "127.0.0.1:0", func(_ context.Context) (tunnel, error) {
-			return nil, errors.New("unused")
+		err := listenLoop(ctx, "127.0.0.1:0", func(_ context.Context, conn net.Conn) {
+			conn.Close()
 		})
 		assert.NoError(t, err)
 	}()
