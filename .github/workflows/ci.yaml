@@ -8,7 +8,7 @@ on:
       - main
 env:
   # renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced
-  GOLANGCI_LINT_VERSION: "v2.13.1"
+  GOLANGCI_LINT_VERSION: "v2.13.2"
 jobs:
   pre-commit:
     name: pre-commit
