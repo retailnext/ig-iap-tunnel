@@ -6,7 +6,7 @@ require (
 	github.com/cedws/iapc v0.1.12
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/oauth2 v0.37.0
-	google.golang.org/api v0.306.0
+	google.golang.org/api v0.307.0
 )
 
 require (
